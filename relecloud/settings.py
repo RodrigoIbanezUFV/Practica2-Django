@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 # Carga .env si existe (local)
 BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv(BASE_DIR / '.env')
+load_dotenv(BASE_DIR / '.env') 
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'unsafe-default-for-dev')
 
