@@ -24,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-9ee8e&!v8h&rm9g##v&jyl=5wxww9f0ibwrc)q7a8*_pr==dp0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['ngmrelecloud-fgercaapbrhafedx.westeurope-01.azurewebsites.net', '127.0.0.1', 'localhost']
-
+# ALLOWED_HOSTS = ['ngmrelecloud-fgercaapbrhafedx.westeurope-01.azurewebsites.net', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -81,18 +81,24 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+#DATABASES = {
+#    'default': {
+ #       "ENGINE": "django.db.backends.postgresql",
+  #      "NAME": "ngmdb",
+  #      "USER": "citus",
+  #      "PASSWORD": os.getenv("DB_PASSWORD"),
+  #      "HOST": "c-ngmrelecloudpg.wfrvmeihcyvdgs.postgres.cosmos.azure.com",
+  #      "PORT": "5432",
+  #      "OPTIONS": {"sslmode": "require"}
+  #  }
+#}
+
 DATABASES = {
     'default': {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "ngmdb",
-        "USER": "citus",
-        "PASSWORD": os.getenv("DB_PASSWORD"),
-        "HOST": "c-ngmrelecloudpg.wfrvmeihcyvdgs.postgres.cosmos.azure.com",
-        "PORT": "5432",
-        "OPTIONS": {"sslmode": "require"}
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
