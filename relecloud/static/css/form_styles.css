@@ -1,0 +1,532 @@
+/* ============================================================================
+   ESTILOS PERSONALIZADOS PARA EL FORMULARIO DE SOLICITUD DE INFORMACIÓN
+   ============================================================================
+   Este archivo contiene estilos CSS personalizados que mejoran la apariencia
+   y experiencia de usuario del formulario de solicitud de información
+   ============================================================================ */
+
+/* Imagen de fondo del encabezado principal */
+.main-header {
+    background-image: url('../res/img/cosmos-db.jpeg');
+    background-size: cover;
+}
+
+/* ============================================================================
+   SECCIÓN 1: ESTILOS GENERALES Y VARIABLES
+   ============================================================================ */
+
+:root {
+    /* Colores personalizados */
+    --primary-color: #0d6efd;      /* Azul primario (Bootstrap) */
+    --secondary-color: #6c757d;    /* Gris (Bootstrap) */
+    --success-color: #198754;       /* Verde (Bootstrap) */
+    --danger-color: #dc3545;        /* Rojo (Bootstrap) */
+    --info-color: #0dcaf0;          /* Cian (Bootstrap) */
+    --light-gray: #f8f9fa;          /* Gris claro (Bootstrap) */
+    
+    /* Sombras personalizadas */
+    --shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    --shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+    --shadow-xl: 0 1rem 3rem rgba(0, 0, 0, 0.2);
+    
+    /* Transiciones suave */
+    --transition: all 0.3s ease;
+}
+
+* {
+    /* Aplicar box-sizing a todos los elementos */
+    box-sizing: border-box;
+}
+
+body {
+    /* Fondo gradiente sutil */
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+}
+
+/* ============================================================================
+   SECCIÓN 2: ENCABEZADO DEL FORMULARIO
+   ============================================================================ */
+
+.header-section {
+    animation: slideDown 0.6s ease-out;
+}
+
+.header-section h1 {
+    /* Efecto de sombra en el texto */
+    text-shadow: 0 2px 4px rgba(13, 110, 253, 0.1);
+    letter-spacing: -0.5px;
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem !important;
+    transition: var(--transition);
+}
+
+.header-section h1:hover {
+    transform: translateY(-2px);
+    text-shadow: 0 4px 8px rgba(13, 110, 253, 0.2);
+}
+
+.header-section p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* ============================================================================
+   SECCIÓN 3: TARJETA DEL FORMULARIO
+   ============================================================================ */
+
+.form-card {
+    /* Estilo mejorado de la tarjeta */
+    border-radius: 20px !important;
+    background: white;
+    transition: var(--transition);
+    transform: translateY(0);
+    
+    /* Efecto de sombra mejorada */
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.12) !important;
+}
+
+.form-card:hover {
+    /* Efecto al pasar el mouse */
+    transform: translateY(-8px);
+    box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Encabezado de la tarjeta */
+.form-card .card-header {
+    border-radius: 20px 20px 0 0 !important;
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%) !important;
+    border-bottom: none;
+    padding: 2rem 1.5rem !important;
+}
+
+.form-card .card-header h5 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* Cuerpo de la tarjeta */
+.form-card .card-body {
+    padding: 3rem !important;
+    background: #fafbfc;
+}
+
+/* Pie de la tarjeta */
+.form-card .card-footer {
+    border-radius: 0 0 20px 20px !important;
+    background: #f8f9fa !important;
+    border-top: 1px solid #e9ecef;
+}
+
+/* ============================================================================
+   SECCIÓN 4: CAMPOS DEL FORMULARIO
+   ============================================================================ */
+
+.form-field {
+    position: relative;
+    margin-bottom: 1.5rem !important;
+}
+
+/* Etiquetas */
+.form-label {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    transition: var(--transition);
+}
+
+.form-label:hover {
+    color: var(--primary-color);
+}
+
+.form-label i {
+    font-size: 1.2rem;
+}
+
+/* Campos de entrada (input y select) */
+.form-control,
+.form-select {
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 0.875rem 1rem;
+    font-size: 1rem;
+    transition: var(--transition);
+    background-color: white;
+}
+
+.form-control:focus,
+.form-select:focus {
+    /* Estilo cuando el campo tiene foco */
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25) !important;
+    background-color: #f8f9ff;
+}
+
+.form-control::placeholder {
+    color: #adb5bd;
+    font-style: italic;
+}
+
+.form-control-lg,
+.form-select-lg {
+    /* Campos más grandes */
+    padding: 1rem 1.25rem;
+    font-size: 1.05rem;
+    border-radius: 12px;
+}
+
+/* Campos con error */
+.form-control.is-invalid,
+.form-select.is-invalid {
+    border-color: var(--danger-color);
+    background-image: none;
+}
+
+.form-control.is-invalid:focus,
+.form-select.is-invalid:focus {
+    border-color: var(--danger-color) !important;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+}
+
+/* Textarea */
+textarea.form-control {
+    resize: vertical;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+textarea.form-control:focus {
+    min-height: 6rem;
+}
+
+/* ============================================================================
+   SECCIÓN 5: MENSAJES DE ERROR Y VALIDACIÓN
+   ============================================================================ */
+
+.error-message {
+    display: block;
+    font-size: 0.95rem;
+    color: var(--danger-color);
+    margin-top: 0.5rem;
+    animation: shake 0.3s ease-out;
+}
+
+.error-message i {
+    margin-right: 0.5rem;
+}
+
+.invalid-feedback {
+    color: var(--danger-color);
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+/* ============================================================================
+   SECCIÓN 6: ALERTAS (Mensajes de éxito/error)
+   ============================================================================ */
+
+.message-success,
+.message-error {
+    border-radius: 12px;
+    border: none;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+    animation: slideUp 0.4s ease-out;
+    box-shadow: var(--shadow-sm);
+}
+
+.message-success {
+    background-color: #d1e7dd;
+    color: #0f5132;
+    border-left: 4px solid var(--success-color);
+}
+
+.message-error {
+    background-color: #f8d7da;
+    color: #842029;
+    border-left: 4px solid var(--danger-color);
+}
+
+.alert-success {
+    border-radius: 12px;
+    border: 1px solid #badbcc;
+}
+
+.alert-danger {
+    border-radius: 12px;
+    border: 1px solid #f5c2c7;
+}
+
+.alert-info {
+    border-radius: 12px;
+    border: 1px solid #b6d4fe;
+    background-color: #cfe2ff;
+    color: #084298;
+    padding: 1.25rem 1.5rem;
+    font-size: 1rem;
+}
+
+/* ============================================================================
+   SECCIÓN 7: BOTONES
+   ============================================================================ */
+
+.buttons-section {
+    margin-top: 2.5rem;
+}
+
+.btn {
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    transition: var(--transition);
+    padding: 0.75rem 2rem;
+}
+
+.btn-lg {
+    padding: 0.875rem 2.5rem;
+    font-size: 1.05rem;
+    border-radius: 12px;
+}
+
+/* Botón Primario (Enviar) */
+.btn-primary {
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #0b5ed7 0%, #0a58ca 100%);
+    box-shadow: 0 6px 20px rgba(13, 110, 253, 0.4);
+    transform: translateY(-2px);
+    color: white;
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(13, 110, 253, 0.2);
+}
+
+.btn-submit {
+    min-width: 180px;
+}
+
+.btn-submit i {
+    margin-right: 0.5rem;
+    transition: var(--transition);
+}
+
+.btn-submit:hover i {
+    animation: slideRight 0.3s ease-out;
+}
+
+/* Botón Secundario (Cancelar) */
+.btn-secondary {
+    background-color: #e9ecef;
+    color: #495057;
+    box-shadow: 0 2px 10px rgba(108, 117, 125, 0.15);
+}
+
+.btn-secondary:hover {
+    background-color: #dee2e6;
+    color: #212529;
+    box-shadow: 0 4px 15px rgba(108, 117, 125, 0.2);
+    transform: translateY(-2px);
+}
+
+.btn-secondary:active {
+    background-color: #ced4da;
+    transform: translateY(0);
+}
+
+.btn-cancel {
+    min-width: 140px;
+}
+
+/* ============================================================================
+   SECCIÓN 8: SECCIONES INFORMATIVAS
+   ============================================================================ */
+
+.footer-section {
+    color: #6c757d;
+    font-size: 0.95rem;
+    border-top: 1px solid #dee2e6;
+    transition: var(--transition);
+}
+
+.footer-section:hover {
+    background-color: #f1f3f5 !important;
+}
+
+.info-section {
+    border-radius: 12px;
+    border-left: 4px solid var(--info-color);
+    padding: 1.25rem 1.5rem;
+    background-color: #cff4fc;
+    color: #055160;
+    animation: slideUp 0.5s ease-out;
+}
+
+/* ============================================================================
+   SECCIÓN 9: ANIMACIONES PERSONALIZADAS
+   ============================================================================ */
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideRight {
+    0% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(5px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-5px);
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateX(5px);
+    }
+}
+
+/* ============================================================================
+   SECCIÓN 10: RESPONSIVIDAD (Pantallas pequeñas)
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    /* Ajustes para tablets y móviles */
+    .container {
+        padding: 0 15px;
+    }
+    
+    .form-card .card-body {
+        padding: 2rem !important;
+    }
+    
+    .header-section h1 {
+        font-size: 2.5rem;
+    }
+    
+    .header-section p {
+        font-size: 1rem;
+    }
+    
+    .buttons-section {
+        flex-direction: column !important;
+    }
+    
+    .btn-lg {
+        width: 100%;
+        margin-bottom: 0.75rem;
+    }
+    
+    .btn-cancel {
+        margin-right: 0 !important;
+        margin-bottom: 0.75rem;
+    }
+}
+
+@media (max-width: 576px) {
+    /* Ajustes para móviles muy pequeños */
+    .header-section h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem !important;
+    }
+    
+    .form-card .card-header {
+        padding: 1.5rem 1rem !important;
+    }
+    
+    .form-card .card-body {
+        padding: 1.5rem !important;
+    }
+    
+    .form-label {
+        font-size: 1rem;
+    }
+    
+    .form-control-lg,
+    .form-select-lg {
+        padding: 0.875rem 1rem;
+        font-size: 1rem;
+    }
+}
+
+/* ============================================================================
+   SECCIÓN 11: EFECTOS DE HOVER Y FOCUS
+   ============================================================================ */
+
+/* Transiciones suave en todos los elementos interactivos */
+button, a, input, select, textarea {
+    transition: var(--transition);
+}
+
+/* Efecto de focus visible para accesibilidad */
+*:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* ============================================================================
+   SECCIÓN 12: COMPATIBILIDAD Y RESET
+   ============================================================================ */
+
+/* Asegurar que todos los elementos tengan font consistente */
+body, .form-control, .form-select, .btn {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Remover estilos por defecto de navegadores */
+input[type="text"],
+input[type="email"],
+input[type="number"],
+textarea {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%230d6efd' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 12px;
+    padding-right: 2.5rem;
+}
