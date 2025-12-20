@@ -7,13 +7,173 @@ ReleCloud - Request information
 {% endblock title %}
 
 {% block content %}
-<h1>Request information</h1>
-<h2>Fillout the form below to request information about our cruises</h2>
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Encabezado atractivo -->
+            <div class="text-center mb-5 header-section">
+                <h1 class="display-4 fw-bold text-primary mb-3">Request Information</h1>
+                <p class="lead text-muted">Fill out the form below to request detailed information about our amazing cruises. We'll get back to you as soon as possible!</p>
+            </div>
 
-<form method="post">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <button type="submit" class="btn btn-primary">Save</button>
-</form>
+            <!-- Tarjeta del formulario -->
+            <div class="card shadow-lg border-0 rounded-lg overflow-hidden form-card">
+                <div class="card-header bg-primary text-white py-4">
+                    <h5 class="mb-0">
+                        <i class="fas fa-envelope me-2"></i>Contact Information Form
+                    </h5>
+                </div>
+
+                <div class="card-body p-5">
+                    <!-- Mensajes de éxito/error -->
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-success alert-dismissible fade show message-success" role="alert">
+                                <i class="fas fa-check-circle me-2"></i>
+                                <strong>Success!</strong> {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger alert-dismissible fade show message-error" role="alert">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            <strong>Error!</strong>
+                            {% for error in form.non_field_errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endif %}
+
+                    <!-- Formulario -->
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        <!-- Nombre -->
+                        <div class="mb-4 form-field">
+                            <label for="{{ form.name.id_for_label }}" class="form-label fw-bold">
+                                <i class="fas fa-user me-2 text-primary"></i>Full Name
+                            </label>
+                            <input 
+                                type="text" 
+                                class="form-control form-control-lg {% if form.name.errors %}is-invalid{% endif %}" 
+                                id="{{ form.name.id_for_label }}"
+                                name="{{ form.name.name }}"
+                                value="{{ form.name.value|default:'' }}"
+                                placeholder="Enter your full name"
+                                required>
+                            {% if form.name.errors %}
+                                <div class="invalid-feedback d-block error-message">
+                                    <i class="fas fa-times-circle me-1"></i>{{ form.name.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-4 form-field">
+                            <label for="{{ form.email.id_for_label }}" class="form-label fw-bold">
+                                <i class="fas fa-envelope me-2 text-primary"></i>Email Address
+                            </label>
+                            <input 
+                                type="email" 
+                                class="form-control form-control-lg {% if form.email.errors %}is-invalid{% endif %}" 
+                                id="{{ form.email.id_for_label }}"
+                                name="{{ form.email.name }}"
+                                value="{{ form.email.value|default:'' }}"
+                                placeholder="your.email@example.com"
+                                required>
+                            {% if form.email.errors %}
+                                <div class="invalid-feedback d-block error-message">
+                                    <i class="fas fa-times-circle me-1"></i>{{ form.email.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Crucero -->
+                        <div class="mb-4 form-field">
+                            <label for="{{ form.cruise.id_for_label }}" class="form-label fw-bold">
+                                <i class="fas fa-ship me-2 text-primary"></i>Select a Cruise
+                            </label>
+                            <select 
+                                class="form-select form-select-lg {% if form.cruise.errors %}is-invalid{% endif %}" 
+                                id="{{ form.cruise.id_for_label }}"
+                                name="{{ form.cruise.name }}"
+                                required>
+                                <option value="">-- Choose a cruise --</option>
+                                {{ form.cruise }}
+                            </select>
+                            {% if form.cruise.errors %}
+                                <div class="invalid-feedback d-block error-message">
+                                    <i class="fas fa-times-circle me-1"></i>{{ form.cruise.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Notas -->
+                        <div class="mb-5 form-field">
+                            <label for="{{ form.notes.id_for_label }}" class="form-label fw-bold">
+                                <i class="fas fa-sticky-note me-2 text-primary"></i>Additional Notes (Optional)
+                            </label>
+                            <textarea 
+                                class="form-control form-control-lg {% if form.notes.errors %}is-invalid{% endif %}" 
+                                id="{{ form.notes.id_for_label }}"
+                                name="{{ form.notes.name }}"
+                                placeholder="Tell us more about what you'd like to know..."
+                                rows="4">{{ form.notes.value|default:'' }}</textarea>
+                            {% if form.notes.errors %}
+                                <div class="invalid-feedback d-block error-message">
+                                    <i class="fas fa-times-circle me-1"></i>{{ form.notes.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Botones de acción -->
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end buttons-section">
+                            <a href="{% url 'index' %}" class="btn btn-secondary btn-lg me-md-2 btn-cancel">
+                                <i class="fas fa-arrow-left me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg btn-submit">
+                                <i class="fas fa-paper-plane me-2"></i>Send Request
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Footer de la tarjeta -->
+                <div class="card-footer bg-light text-center py-3 text-muted footer-section">
+                    <small><i class="fas fa-lock me-1"></i>Your information is secure and will be used only to respond to your inquiry.</small>
+                </div>
+            </div>
+
+            <!-- Información adicional -->
+            <div class="alert alert-info mt-4 info-section" role="alert">
+                <i class="fas fa-info-circle me-2"></i>
+                <strong>Quick Tip:</strong> We typically respond within 24 hours. Check your email for our reply!
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script de validación -->
+<script>
+    // Validación en el cliente
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            var forms = document.querySelectorAll('.needs-validation');
+            Array.prototype.slice.call(forms).forEach(function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        });
+    })();
+</script>
 
 {% endblock content %}

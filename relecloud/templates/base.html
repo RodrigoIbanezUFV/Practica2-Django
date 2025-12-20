@@ -4,6 +4,8 @@
 
 <head>
     <link rel="stylesheet" href="{% static 'res/css/theme.css' %}" />
+    <!-- CSS personalizado para el formulario de solicitud -->
+    <link rel="stylesheet" href="{% static 'css/form_styles.css' %}" />
     <title>
         {% block title %}
         ReleCloud - Expand your horizons
@@ -39,7 +41,7 @@
     </nav>
 
     <main role="main">
-        <div class="jumbotron main-header" style="background-image: url({% static 'res/img/cosmos-db.jpeg' %}); background-size: cover;">
+        <div class="jumbotron main-header">
             <div class="container">
                 <div class="row">
                     <div class="col-md-4">
@@ -53,7 +55,7 @@
         </div>
 
         {% if messages %}
-            {% for message in messages %}'
+            {% for message in messages %}
             <div class="alert alert-{{message.tags}}" role="alert">
                 <p>{{ message }}</p>
             </div>   
