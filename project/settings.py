@@ -150,9 +150,24 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Email configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' #Protocolo para enviar emails
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_HOST = 'smtp.gmail.com'  #email del servidor (gmail)
 EMAIL_PORT = 587 #Puerto de gmail
 EMAIL_USE_TLS = True #activamos encriptación
 EMAIL_HOST_USER = 'ccnrbtrabajoisii@gmail.com' #email al que se enviarán los correos
 EMAIL_HOST_PASSWORD = 'CCNRBtrabajoIS2'
 DEFAULT_FROM_EMAIL = 'tu_email@gmail.com'#email que enviará los correos de  vuelta ¿?
+
+import sys
+
+if 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        }
+    }
+
+    # Evita errores del manifest de staticfiles en tests
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
