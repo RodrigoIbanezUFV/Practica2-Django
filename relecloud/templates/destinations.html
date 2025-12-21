@@ -6,8 +6,8 @@ ReleCloud - Destinations
 {% endblock %}
 
 {% block content %}
-<h1>Destinos disponibles</h1>
-<p>Explora algunos de nuestros destinos más destacados.</p>
+<h1>Available Destinations</h1>
+<p>Explore some of our most outstanding destinations</p>
 
 <ul class="list-group">
   {% for destination in destinations %}
@@ -15,20 +15,14 @@ ReleCloud - Destinations
       <strong>{{ destination.name }}</strong>
 
       <div style="margin-top: 8px;">
-        {% if destination.name|lower == "paris" %}
-          <img src="{% static 'res/img/paris.jpg' %}" alt="París" style="max-width:200px; height:auto;">
-          <p style="margin-top:6px;">Breve, cultural y emblemática.</p>
+        {% if destination.image %}
+          <img src="{{ destination.image.url }}"
+               alt="{{ destination.name }}"
+               style="max-width:200px; height:auto;">
+        {% endif %}
 
-        {% elif destination.name|lower == "saturno" %}
-          <img src="{% static 'res/img/saturno.jpg' %}" alt="Saturno" style="max-width:200px; height:auto;">
-          <p style="margin-top:6px;">El planeta de los anillos.</p>
-
-        {% elif destination.name|lower == "marte" %}
-          <img src="{% static 'res/img/marte.jpg' %}" alt="Marte" style="max-width:200px; height:auto;">
-          <p style="margin-top:6px;">El planeta rojo y la exploración.</p>
-
-        {% else %}
-          <img src="{% static 'res/img/paris.jpg' %}" alt="Destino" style="max-width:200px; height:auto;">
+        {% if destination.description %}
+          <p style="margin-top:6px;">{{ destination.description }}</p>
         {% endif %}
       </div>
     </a>
@@ -36,26 +30,7 @@ ReleCloud - Destinations
   {% empty %}
     <li class="list-group-item">
       <strong>No hay destinos cargados en la base de datos.</strong>
-      <p style="margin: 6px 0;">Mostramos estos ejemplos para la demo:</p>
-
-      <div style="display:flex; gap:16px; flex-wrap:wrap;">
-
-        <div>
-          <img src="{% static 'res/img/paris.jpg' %}" alt="París" style="max-width:200px; height:auto;">
-          <p style="margin-top:6px;"><strong>París</strong>: breve, cultural y emblemática.</p>
-        </div>
-
-        <div>
-          <img src="{% static 'res/img/saturno.jpg' %}" alt="Saturno" style="max-width:200px; height:auto;">
-          <p style="margin-top:6px;"><strong>Saturno</strong>: el planeta de los anillos.</p>
-        </div>
-
-        <div>
-          <img src="{% static 'res/img/marte.jpg' %}" alt="Marte" style="max-width:200px; height:auto;">
-          <p style="margin-top:6px;"><strong>Marte</strong>: el planeta rojo y la exploración.</p>
-        </div>
-
-      </div>
+      <p style="margin: 6px 0;">Crea destinos desde <code>/admin</code> para visualizarlos aquí.</p>
     </li>
   {% endfor %}
 </ul>
