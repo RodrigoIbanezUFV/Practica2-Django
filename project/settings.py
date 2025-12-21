@@ -81,24 +81,24 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-#DATABASES = {
-#    'default': {
- #       "ENGINE": "django.db.backends.postgresql",
-  #      "NAME": "ngmdb",
-  #      "USER": "citus",
-  #      "PASSWORD": os.getenv("DB_PASSWORD"),
-  #      "HOST": "c-ngmrelecloudpg.wfrvmeihcyvdgs.postgres.cosmos.azure.com",
-  #      "PORT": "5432",
-  #      "OPTIONS": {"sslmode": "require"}
-  #  }
-#}
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+       "ENGINE": "django.db.backends.postgresql",
+      "NAME": "ngmdb",
+      "USER": "citus",
+      "PASSWORD": os.getenv("DB_PASSWORD"),
+      "HOST": "c-ngmrelecloudpg.wfrvmeihcyvdgs.postgres.cosmos.azure.com",
+      "PORT": "5432",
+      "OPTIONS": {"sslmode": "require"}
+  }
 }
+
+#DATABASES = {
+ #   'default': {
+ #       'ENGINE': 'django.db.backends.sqlite3',
+ #       'NAME': BASE_DIR / 'db.sqlite3',
+ #   }
+#}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -138,6 +138,10 @@ STATIC_URL = 'static/'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+#MEDIA (archivos subidos: imágenes de destinos)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
