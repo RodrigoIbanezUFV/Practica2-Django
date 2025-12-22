@@ -7,12 +7,20 @@ ReleCloud - Destinations
 
 {% block content %}
 <h1>Available Destinations</h1>
-<p>Explore some of our most outstanding destinations</p>
+<p>Explore some of our most outstanding destinations (sorted by popularity).</p>
 
 <ul class="list-group">
   {% for destination in destinations %}
     <a class="list-group-item list-group-item-action" href="{% url 'destination_detail' destination.id %}">
-      <strong>{{ destination.name }}</strong>
+
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <strong>{{ destination.name }}</strong>
+
+        <small>
+          📝 {{ destination.reviews_count|default:0 }} |
+          ⭐ {{ destination.avg_rating|default_if_none:"-"|floatformat:1 }}
+        </small>
+      </div>
 
       <div style="margin-top: 8px;">
         {% if destination.image %}
@@ -25,6 +33,7 @@ ReleCloud - Destinations
           <p style="margin-top:6px;">{{ destination.description }}</p>
         {% endif %}
       </div>
+
     </a>
 
   {% empty %}
