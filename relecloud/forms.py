@@ -1,7 +1,7 @@
 from django import forms
 from .models import Opinion, Cruise, Destination, UserTravelRecord
 
-
+# Definición de forms
 class OpinionForm(forms.ModelForm):
     choice = forms.ChoiceField(
         choices=[('destination', 'Destino'), ('cruise', 'Crucero')],

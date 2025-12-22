@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
+# Definicion de modelos 
 class Destination(models.Model):
     name = models.CharField(unique=True, max_length=50)
     description = models.TextField(max_length=2000)

@@ -11,7 +11,7 @@ from django.db.models import Avg
 from . import models
 from .forms import OpinionForm
 
-
+# Definición de views
 def index(request):
     return render(request, 'index.html')
 
