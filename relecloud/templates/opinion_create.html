@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}ReleCloud - Nueva opinión{% endblock %}
+
+{% block content %}
+<h1>Dejar una valoración</h1>
+<p>Solo puedes valorar destinos o cruceros que hayas comprado/viajado.</p>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button class="btn btn-primary" type="submit">Guardar</button>
+</form>
+{% endblock %}
