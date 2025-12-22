@@ -1,18 +1,41 @@
 {% extends 'base.html' %}
 
-{% block title %}
-ReleCloud - {{ cruise }}
-{% endblock %}
+{% block title %}ReleCloud - {{ cruise.name }}{% endblock %}
 
 {% block content %}
-<h1>{{ cruise }}</h1>
+<h1>{{ cruise.name }}</h1>
+
+{% if cruise.description %}
+  <p>{{ cruise.description }}</p>
+{% endif %}
+
+<hr>
+
 <p>
-{{ cruise.description }}
+  <strong>Valoración media:</strong>
+  {% if avg_rating %}
+    {{ avg_rating|floatformat:1 }}/5 ({{ opinions_count }} opiniones)
+  {% else %}
+    Sin valoraciones todavía
+  {% endif %}
 </p>
-<p>You can explore {{ cruise }} on the following cruises:</p>
+
+{% if user.is_authenticated %}
+  <a class="btn btn-primary" href="{% url 'opinion_create' %}">Dejar una valoración</a>
+{% else %}
+  <p><em>Inicia sesión para dejar una valoración.</em></p>
+{% endif %}
+
+<hr>
+
+<p><strong>Destinos de este crucero:</strong></p>
 <ul class="list-group">
-    {% for destination in cruise.destinations.all %}
-    <a class="list-group-item list-group-item-action" href="{% url 'destination_detail' destination.id %}">{{ destination }}</a>
-    {% endfor %}
+  {% for d in cruise.destinations.all %}
+    <a class="list-group-item list-group-item-action" href="{% url 'destination_detail' d.id %}">
+      {{ d.name }}
+    </a>
+  {% empty %}
+    <li class="list-group-item">No destinations available.</li>
+  {% endfor %}
 </ul>
-{% endblock content %}
+{% endblock %}
