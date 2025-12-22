@@ -20,6 +20,25 @@ ReleCloud - {{ destination.name }}
   <p>{{ destination.description }}</p>
 {% endif %}
 
+<hr>
+
+<p>
+  <strong>Valoración media:</strong>
+  {% if avg_rating %}
+    {{ avg_rating|floatformat:1 }}/5 ({{ opinions_count }} opiniones)
+  {% else %}
+    Sin valoraciones todavía
+  {% endif %}
+</p>
+
+{% if user.is_authenticated %}
+  <a class="btn btn-primary" href="{% url 'opinion_create' %}">Dejar una valoración</a>
+{% else %}
+  <p><em>Inicia sesión para dejar una valoración.</em></p>
+{% endif %}
+
+<hr>
+
 <p><strong>Available cruises for this destination:</strong></p>
 <ul class="list-group">
   {% for cruise in destination.cruises.all %}
