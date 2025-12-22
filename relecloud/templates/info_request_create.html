@@ -93,22 +93,17 @@ ReleCloud - Request information
 
                         <!-- Crucero -->
                         <div class="mb-4 form-field">
-                            <label for="{{ form.cruise.id_for_label }}" class="form-label fw-bold">
-                                <i class="fas fa-ship me-2 text-primary"></i>Select a Cruise
-                            </label>
-                            <select 
-                                class="form-select form-select-lg {% if form.cruise.errors %}is-invalid{% endif %}" 
-                                id="{{ form.cruise.id_for_label }}"
-                                name="{{ form.cruise.name }}"
-                                required>
-                                <option value="">-- Choose a cruise --</option>
-                                {{ form.cruise }}
-                            </select>
-                            {% if form.cruise.errors %}
-                                <div class="invalid-feedback d-block error-message">
-                                    <i class="fas fa-times-circle me-1"></i>{{ form.cruise.errors.0 }}
-                                </div>
-                            {% endif %}
+                        <label for="{{ form.cruise.id_for_label }}" class="form-label fw-bold">
+                            <i class="fas fa-ship me-2 text-primary"></i>Select a Cruise
+                        </label>
+
+                        {{ form.cruise }}
+
+                        {% if form.cruise.errors %}
+                            <div class="invalid-feedback d-block error-message">
+                            <i class="fas fa-times-circle me-1"></i>{{ form.cruise.errors.0 }}
+                            </div>
+                        {% endif %}
                         </div>
 
                         <!-- Notas -->
