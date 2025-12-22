@@ -6,10 +6,11 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.db.models import Avg
+from django.db.models import Avg, Count
 
 from . import models
 from .forms import OpinionForm
+
 
 # Definición de views
 def index(request):
@@ -20,8 +21,16 @@ def about(request):
     return render(request, 'about.html')
 
 
+# ✅ PT4: ordenar destinos por popularidad (nº reviews y media)
 def destinations(request):
-    all_destinations = models.Destination.objects.all()
+    all_destinations = (
+        models.Destination.objects
+        .annotate(
+            reviews_count=Count('opinions', distinct=True),
+            avg_rating=Avg('opinions__rating')
+        )
+        .order_by('-reviews_count', '-avg_rating', 'name')
+    )
     return render(request, 'destinations.html', {'destinations': all_destinations})
 
 
