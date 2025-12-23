@@ -24,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-9ee8e&!v8h&rm9g##v&jyl=5wxww9f0ibwrc)q7a8*_pr==dp0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-# ALLOWED_HOSTS = ['ngmrelecloud-fgercaapbrhafedx.westeurope-01.azurewebsites.net', '127.0.0.1', 'localhost']
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['ngmrelecloud-fgercaapbrhafedx.westeurope-01.azurewebsites.net', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')]
 
 # Application definition
 
@@ -164,10 +164,3 @@ if 'test' in sys.argv:
 
     # Evita errores del manifest de staticfiles en tests
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
-
-# Lee variables de entorno para producción
-SECRET_KEY = os.environ.get('SECRET_KEY', 'tu-clave-por-defecto')
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
-
-
