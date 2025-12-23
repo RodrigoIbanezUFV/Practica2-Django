@@ -165,3 +165,9 @@ if 'test' in sys.argv:
     # Evita errores del manifest de staticfiles en tests
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
+# Lee variables de entorno para producción
+SECRET_KEY = os.environ.get('SECRET_KEY', 'tu-clave-por-defecto')
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+
+
