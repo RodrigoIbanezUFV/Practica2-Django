@@ -9,31 +9,44 @@ ReleCloud - {{ destination.name }}
 <h1>{{ destination.name }}</h1>
 
 <div style="margin: 12px 0;">
-  {% if destination.name|lower == "paris" %}
-    <img src="{% static 'res/img/paris.jpg' %}" alt="París" style="max-width:400px; height:auto;">
-    <p style="margin-top:8px;"><strong>París</strong>: breve, cultural y emblemática.</p>
-
-  {% elif destination.name|lower == "saturno" %}
-    <img src="{% static 'res/img/saturno.jpg' %}" alt="Saturno" style="max-width:400px; height:auto;">
-    <p style="margin-top:8px;"><strong>Saturno</strong>: el planeta de los anillos.</p>
-
-  {% elif destination.name|lower == "marte" %}
-    <img src="{% static 'res/img/marte.jpg' %}" alt="Marte" style="max-width:400px; height:auto;">
-    <p style="margin-top:8px;"><strong>Marte</strong>: el planeta rojo y la exploración.</p>
-
-  {% else %}
-    <img src="{% static 'res/img/paris.jpg' %}" alt="Destino" style="max-width:400px; height:auto;">
+  {% if destination.image %}
+    <img src="{{ destination.image.url }}"
+         alt="{{ destination.name }}"
+         style="max-width:400px; height:auto;">
   {% endif %}
 </div>
 
-<p>{{ destination.description }}</p>
+{% if destination.description %}
+  <p>{{ destination.description }}</p>
+{% endif %}
 
-<p><strong>Cruceros disponibles para este destino:</strong></p>
+<hr>
+
+<p>
+  <strong>Valoración media:</strong>
+  {% if avg_rating %}
+    {{ avg_rating|floatformat:1 }}/5 ({{ opinions_count }} opiniones)
+  {% else %}
+    Sin valoraciones todavía
+  {% endif %}
+</p>
+
+{% if user.is_authenticated %}
+  <a class="btn btn-primary" href="{% url 'opinion_create' %}">Dejar una valoración</a>
+{% else %}
+  <p><em>Inicia sesión para dejar una valoración.</em></p>
+{% endif %}
+
+<hr>
+
+<p><strong>Available cruises for this destination:</strong></p>
 <ul class="list-group">
   {% for cruise in destination.cruises.all %}
     <a class="list-group-item list-group-item-action" href="{% url 'cruise_detail' cruise.id %}">
       {{ cruise }}
     </a>
+  {% empty %}
+    <li class="list-group-item">No cruises available for this destination.</li>
   {% endfor %}
 </ul>
 {% endblock content %}
