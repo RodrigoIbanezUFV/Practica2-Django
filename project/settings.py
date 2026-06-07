@@ -149,8 +149,19 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Email configuration
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-DEFAULT_FROM_EMAIL = "admin@relecloud.com"
+# En desarrollo/tests usa consola; en producción SMTP real (Gmail) vía variables de entorno.
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = os.getenv("EMAIL_HOST_USER", "admin@relecloud.com")
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", os.getenv("EMAIL_HOST_USER"))
+
+if os.getenv("EMAIL_HOST_USER") and os.getenv("EMAIL_HOST_PASSWORD"):
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 import sys
 
@@ -164,4 +175,5 @@ if 'test' in sys.argv:
 
     # Evita errores del manifest de staticfiles en tests
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+    EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
 
