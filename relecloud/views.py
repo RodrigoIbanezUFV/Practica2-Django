@@ -71,8 +71,9 @@ class InfoRequestCreate(SuccessMessageMixin, generic.CreateView):
         response = super().form_valid(form)
         info_request = self.object
 
-        subject = 'Nueva solicitud de información ~ ReleCloud'
-        message = f"""
+        # 1) Notificación al administrador
+        subject_admin = 'Nueva solicitud de información ~ ReleCloud'
+        message_admin = f"""
 Se ha recibido una nueva solicitud de información:
 
 Nombre: {info_request.name}
@@ -80,13 +81,35 @@ Email: {info_request.email}
 Crucero: {info_request.cruise}
 Notas: {info_request.notes}
         """
-
         send_mail(
-            subject,
-            message,
+            subject_admin,
+            message_admin,
             settings.DEFAULT_FROM_EMAIL,
-            ['admin@relecloud.com'],
+            [settings.ADMIN_EMAIL],
         )
+
+        # 2) Confirmación al usuario
+        subject_user = 'Hemos recibido tu solicitud ~ ReleCloud'
+        message_user = f"""
+Hola {info_request.name},
+
+Gracias por tu interés en {info_request.cruise}. Hemos recibido tu solicitud
+y nos pondremos en contacto contigo lo antes posible.
+
+Resumen de tu solicitud:
+- Crucero: {info_request.cruise}
+- Notas: {info_request.notes}
+
+Un saludo,
+El equipo de ReleCloud
+        """
+        send_mail(
+            subject_user,
+            message_user,
+            settings.DEFAULT_FROM_EMAIL,
+            [info_request.email],
+        )
+
         return response
 
 

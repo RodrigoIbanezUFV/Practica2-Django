@@ -54,13 +54,18 @@ class InfoRequestViewTests(TestCase):
 
         self.client.post(url, data=payload)
 
-        # Debe haberse enviado 1 email
-        self.assertEqual(len(mail.outbox), 1)
+        # Deben haberse enviado 2 emails: notificación al admin y confirmación al usuario
+        self.assertEqual(len(mail.outbox), 2)
 
-        # Validaciones mínimas del contenido
-        email = mail.outbox[0]
-        self.assertIn("Cristina", email.body)
-        self.assertIn("nagamose18@gmail.com", email.body)
-        self.assertIn("Test Cruise", email.body)
+        # El primer correo es la notificación al administrador
+        email_admin = mail.outbox[0]
+        self.assertIn("Cristina", email_admin.body)
+        self.assertIn("nagamose18@gmail.com", email_admin.body)
+        self.assertIn("Test Cruise", email_admin.body)
+
+        # El segundo correo es la confirmación al usuario
+        email_user = mail.outbox[1]
+        self.assertEqual(email_user.to, ["nagamose18@gmail.com"])
+        self.assertIn("Cristina", email_user.body)
 
 
