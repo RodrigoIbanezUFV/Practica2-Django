@@ -102,3 +102,20 @@ class DestinationImageTests(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "default.jpg")
+
+    from django.contrib.auth.models import User
+
+class AllauthAuthenticationTests(TestCase):
+    """
+    PT3 - TDD: autenticación integrada con django-allauth.
+    """
+
+    def test_signup_page_uses_allauth(self):
+        response = self.client.get("/accounts/signup/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Sign Up")
+
+    def test_login_page_uses_allauth(self):
+        response = self.client.get("/accounts/login/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Sign In")
