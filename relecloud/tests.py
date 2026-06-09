@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.core import mail
 
-from .models import Cruise, InfoRequest
+from .models import Cruise, InfoRequest, Destination
 
 
 class InfoRequestViewTests(TestCase):
@@ -68,4 +68,37 @@ class InfoRequestViewTests(TestCase):
         self.assertEqual(email_user.to, ["nagamose18@gmail.com"])
         self.assertIn("Cristina", email_user.body)
 
+class DestinationImageTests(TestCase):
+    """
+    PT2 - Pruebas funcionales de la imagen por destino.
+    """
 
+    def test_destination_has_image_field(self):
+        """El modelo Destination debe tener un campo de imagen."""
+        campos = [f.name for f in Destination._meta.get_fields()]
+        self.assertIn("image", campos)
+
+    def test_destination_image_is_optional(self):
+        """El campo image debe ser opcional (permite destinos sin imagen propia)."""
+        campo_image = Destination._meta.get_field("image")
+        self.assertTrue(campo_image.null)
+        self.assertTrue(campo_image.blank)
+
+    def test_destination_without_image_has_no_file(self):
+        """Un destino creado sin imagen no tiene archivo asociado."""
+        destino = Destination.objects.create(
+            name="Destino sin foto",
+            description="Un destino de prueba sin imagen propia.",
+        )
+        self.assertFalse(destino.image)
+
+    def test_destinations_page_shows_default_image_when_missing(self):
+        """La página de destinos carga y muestra la imagen por defecto si falta la propia."""
+        Destination.objects.create(
+            name="Destino sin foto",
+            description="Destino de prueba.",
+        )
+        url = reverse("destinations")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "default.jpg")
