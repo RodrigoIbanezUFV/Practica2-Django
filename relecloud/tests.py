@@ -119,3 +119,32 @@ class AllauthAuthenticationTests(TestCase):
         response = self.client.get("/accounts/login/")
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Sign In")
+def test_user_can_signup(self):
+    response = self.client.post(
+        "/accounts/signup/",
+        {
+            "username": "usuario_prueba",
+            "password1": "PasswordSegura123",
+            "password2": "PasswordSegura123",
+        },
+        follow=True,
+    )
+
+    self.assertEqual(response.status_code, 200)
+
+def test_user_can_login(self):
+    User.objects.create_user(
+        username="usuario_test",
+        password="PasswordSegura123"
+    )
+
+    response = self.client.post(
+        "/accounts/login/",
+        {
+            "login": "usuario_test",
+            "password": "PasswordSegura123",
+        },
+        follow=True,
+    )
+
+    self.assertEqual(response.status_code, 200)
