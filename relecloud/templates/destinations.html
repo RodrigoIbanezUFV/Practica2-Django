@@ -1,46 +1,55 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block title %}
-ReleCloud - Destinations
-{% endblock %}
-
-{% block content %}
+{% extends 'base.html' %} {% load static %} {% block title %} ReleCloud -
+Destinations {% endblock %} {% block content %}
 <h1>Available Destinations</h1>
 <p>Explore some of our most outstanding destinations (sorted by popularity).</p>
 
 <ul class="list-group">
-  {% for destination in destinations %}
-    <a class="list-group-item list-group-item-action" href="{% url 'destination_detail' destination.id %}">
+    {% for destination in destinations %}
+    <a
+        class="list-group-item list-group-item-action"
+        href="{% url 'destination_detail' destination.id %}"
+    >
+        <div
+            style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            "
+        >
+            <strong>{{ destination.name }}</strong>
 
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <strong>{{ destination.name }}</strong>
+            <small>
+                📝 {{ destination.reviews_count|default:0 }} | ⭐ {{
+                destination.avg_rating|default_if_none:"-"|floatformat:1 }}
+            </small>
+        </div>
 
-        <small>
-          📝 {{ destination.reviews_count|default:0 }} |
-          ⭐ {{ destination.avg_rating|default_if_none:"-"|floatformat:1 }}
-        </small>
-      </div>
-
-      <div style="margin-top: 8px;">
-        {% if destination.image %}
-          <img src="{{ destination.image.url }}"
-               alt="{{ destination.name }}"
-               style="max-width:200px; height:auto;">
-        {% endif %}
-
-        {% if destination.description %}
-          <p style="margin-top:6px;">{{ destination.description }}</p>
-        {% endif %}
-      </div>
-
+        <div style="margin-top: 8px">
+            {% if destination.image %}
+            <img
+                src="{{ destination.image.url }}"
+                alt="{{ destination.name }}"
+                style="max-width: 200px; height: auto"
+            />
+            {% else %}
+            <img
+                src="{% static 'destinations/default.jpg' %}"
+                alt="Imagen no disponible"
+                style="max-width: 200px; height: auto"
+            />
+            {% endif %} {% if destination.description %}
+            <p style="margin-top: 6px">{{ destination.description }}</p>
+            {% endif %}
+        </div>
     </a>
 
-  {% empty %}
+    {% empty %}
     <li class="list-group-item">
-      <strong>No destinations available.</strong>
-      <p style="margin: 6px 0;">Please create destinations from the admin panel.</p>
+        <strong>No destinations available.</strong>
+        <p style="margin: 6px 0">
+            Please create destinations from the admin panel.
+        </p>
     </li>
-  {% endfor %}
+    {% endfor %}
 </ul>
 {% endblock content %}
