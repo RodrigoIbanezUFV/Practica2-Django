@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.core import mail
+from django.contrib.auth.models import User
 
 from .models import Cruise, InfoRequest, Destination
 
@@ -103,48 +104,48 @@ class DestinationImageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "default.jpg")
 
-    from django.contrib.auth.models import User
+
 
 class AllauthAuthenticationTests(TestCase):
-    """
-    PT3 - TDD: autenticación integrada con django-allauth.
-    """
-
+    
     def test_signup_page_uses_allauth(self):
         response = self.client.get("/accounts/signup/")
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Sign Up")
+        self.assertContains(response, "Crear cuenta")
 
     def test_login_page_uses_allauth(self):
         response = self.client.get("/accounts/login/")
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Sign In")
-def test_user_can_signup(self):
-    response = self.client.post(
-        "/accounts/signup/",
-        {
-            "username": "usuario_prueba",
-            "password1": "PasswordSegura123",
-            "password2": "PasswordSegura123",
-        },
-        follow=True,
-    )
+        self.assertContains(response, "Iniciar sesión")
 
-    self.assertEqual(response.status_code, 200)
+    def test_user_can_signup(self):
+        response = self.client.post(
+            "/accounts/signup/",
+            {
+                "username": "usuario_prueba",
+                "password1": "PasswordSegura123",
+                "password2": "PasswordSegura123",
+            },
+            follow=True,
+        )
 
-def test_user_can_login(self):
-    User.objects.create_user(
-        username="usuario_test",
-        password="PasswordSegura123"
-    )
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(User.objects.filter(username="usuario_prueba").exists())
 
-    response = self.client.post(
-        "/accounts/login/",
-        {
-            "login": "usuario_test",
-            "password": "PasswordSegura123",
-        },
-        follow=True,
-    )
+    def test_user_can_login(self):
+        User.objects.create_user(
+            username="usuario_test",
+            password="PasswordSegura123"
+        )
 
-    self.assertEqual(response.status_code, 200)
+        response = self.client.post(
+            "/accounts/login/",
+            {
+                "login": "usuario_test",
+                "password": "PasswordSegura123",
+            },
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context["user"].is_authenticated)
