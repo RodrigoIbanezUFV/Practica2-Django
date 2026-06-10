@@ -52,6 +52,12 @@ stages:
       workingDirectory: $(projectRoot)
       displayName: "Run tests"
 
+    - script: |
+        source antenv/bin/activate
+        python manage.py collectstatic --noinput
+      workingDirectory: $(projectRoot)
+      displayName: "Collect static files"
+
     - task: ArchiveFiles@2
       displayName: 'Archive files'
       inputs:
