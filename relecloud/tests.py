@@ -225,3 +225,58 @@ class OpinionReviewTests(TestCase):
         Opinion.objects.create(destination=self.destino, rating=3)
         media = Opinion.objects.filter(destination=self.destino).aggregate(avg=Avg("rating"))["avg"]
         self.assertEqual(media, 4.0)
+
+class PopularityOrderingTests(TestCase):
+    """
+    PT4 - Prueba funcional del orden de destinos por popularidad.
+    """
+
+    def test_destinations_ordered_by_popularity(self):
+        """
+        Los destinos se ordenan por número de reviews (desc) y luego por media (desc).
+        El destino con más reviews debe aparecer antes que uno con menos.
+        """
+        # Destino A: 2 reviews
+        destino_a = Destination.objects.create(name="Destino A", description="desc A")
+        Opinion.objects.create(destination=destino_a, rating=3)
+        Opinion.objects.create(destination=destino_a, rating=5)
+
+        # Destino B: 1 review
+        destino_b = Destination.objects.create(name="Destino B", description="desc B")
+        Opinion.objects.create(destination=destino_b, rating=5)
+
+        # Destino C: 0 reviews
+        destino_c = Destination.objects.create(name="Destino C", description="desc C")
+
+        url = reverse("destinations")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+        # La vista pasa los destinos en orden en el contexto
+        destinos = list(response.context["destinations"])
+
+        # A (2 reviews) antes que B (1 review) antes que C (0 reviews)
+        self.assertEqual(destinos[0], destino_a)
+        self.assertEqual(destinos[1], destino_b)
+        self.assertEqual(destinos[2], destino_c)
+
+    def test_tiebreak_by_average_rating(self):
+        """
+        A igualdad de número de reviews, el de mayor media va primero.
+        """
+        # Ambos con 1 review, pero distinta nota
+        destino_alto = Destination.objects.create(name="Nota Alta", description="desc")
+        Opinion.objects.create(destination=destino_alto, rating=5)
+
+        destino_bajo = Destination.objects.create(name="Nota Baja", description="desc")
+        Opinion.objects.create(destination=destino_bajo, rating=1)
+
+        url = reverse("destinations")
+        response = self.client.get(url)
+        destinos = list(response.context["destinations"])
+
+        # El de nota 5 va antes que el de nota 1 (mismo nº de reviews)
+        self.assertLess(
+            destinos.index(destino_alto),
+            destinos.index(destino_bajo),
+        )
