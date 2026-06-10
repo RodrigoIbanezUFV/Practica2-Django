@@ -32,6 +32,10 @@ ALLOWED_HOSTS = [
     'localhost',
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://rodrigoibanezcloud-brfmgaatdjb3grbt.spaincentral-01.azurewebsites.net/',
+]
+
 # Application definition
 
 INSTALLED_APPS = [
