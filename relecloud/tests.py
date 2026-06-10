@@ -3,7 +3,8 @@ from django.urls import reverse
 from django.core import mail
 from django.contrib.auth.models import User
 
-from .models import Cruise, InfoRequest, Destination
+from .models import Cruise, InfoRequest, Destination, Opinion, UserTravelRecord
+from datetime import date
 
 
 class InfoRequestViewTests(TestCase):
@@ -159,3 +160,68 @@ class AllauthAuthenticationTests(TestCase):
         response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Sign Up")
+
+class OpinionReviewTests(TestCase):
+    """
+    PT3 - Pruebas de reviews: solo usuarios con viaje registrado pueden opinar.
+    """
+
+    def setUp(self):
+        self.comprador = User.objects.create_user(username="comprador", password="Pass12345")
+        self.sin_compra = User.objects.create_user(username="sincompra", password="Pass12345")
+        self.destino = Destination.objects.create(
+            name="Marte Test",
+            description="Destino de prueba para reviews.",
+        )
+        # El comprador tiene un viaje registrado a ese destino
+        UserTravelRecord.objects.create(
+            user=self.comprador,
+            destination=self.destino,
+            travel_date=date(2025, 1, 1),
+        )
+
+    def test_anonimo_es_redirigido_al_login(self):
+        """Un usuario no autenticado no puede acceder al formulario de opinión."""
+        url = reverse("opinion_create")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/accounts/login/", response.url)
+
+    def test_usuario_con_viaje_puede_opinar(self):
+        """Un usuario con UserTravelRecord puede crear una opinión sobre ese destino."""
+        self.client.login(username="comprador", password="Pass12345")
+        url = reverse("opinion_create")
+        response = self.client.post(url, {
+            "choice": "destination",
+            "destination": self.destino.id,
+            "rating": 5,
+        })
+        # La opinión se guarda y redirige a destinations
+        self.assertEqual(Opinion.objects.count(), 1)
+        opinion = Opinion.objects.first()
+        self.assertEqual(opinion.destination_id, self.destino.id)
+        self.assertEqual(opinion.rating, 5)
+
+    def test_usuario_sin_viaje_no_puede_opinar(self):
+        """Un usuario sin UserTravelRecord no puede crear opinión (el form no le ofrece el destino)."""
+        self.client.login(username="sincompra", password="Pass12345")
+        url = reverse("opinion_create")
+        response = self.client.post(url, {
+            "choice": "destination",
+            "destination": self.destino.id,
+            "rating": 5,
+        })
+        # No se crea ninguna opinión (el destino no está en su queryset permitido)
+        self.assertEqual(Opinion.objects.count(), 0)
+
+    def test_valoracion_media_se_calcula(self):
+        """La valoración media de un destino se calcula a partir de sus opiniones."""
+        from django.db.models import Avg
+        otro = User.objects.create_user(username="otro", password="Pass12345")
+        UserTravelRecord.objects.create(
+            user=otro, destination=self.destino, travel_date=date(2025, 1, 2)
+        )
+        Opinion.objects.create(destination=self.destino, rating=5)
+        Opinion.objects.create(destination=self.destino, rating=3)
+        media = Opinion.objects.filter(destination=self.destino).aggregate(avg=Avg("rating"))["avg"]
+        self.assertEqual(media, 4.0)
