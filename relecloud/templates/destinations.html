@@ -19,15 +19,14 @@ Destinations {% endblock %} {% block content %}
             <strong>{{ destination.name }}</strong>
 
             <small>
-                📝 {{ destination.reviews_count|default:0 }} | ⭐ {{
-                destination.avg_rating|default_if_none:"-"|floatformat:1 }}
+                📝 {{ destination.reviews_count|default:0 }} | ⭐ {{ destination.avg_rating|default_if_none:"-"|floatformat:1 }}
             </small>
         </div>
 
         <div style="margin-top: 8px">
             {% if destination.image %}
             <img
-                src="{% static 'destinations/' %}{{ destination.image }}"
+                src="{% static destination.image %}"
                 alt="{{ destination.name }}"
                 style="max-width: 200px; height: auto"
             />
