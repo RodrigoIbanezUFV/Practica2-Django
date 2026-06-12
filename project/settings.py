@@ -33,7 +33,7 @@ ALLOWED_HOSTS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://rodrigoibanezcloud-brfmgaatdjb3grbt.spaincentral-01.azurewebsites.net/',
+    'https://rodrigoibanezcloud-brfmgaatdjb3grbt.spaincentral-01.azurewebsites.net',
 ]
 
 # Application definition
