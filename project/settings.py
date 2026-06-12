@@ -150,7 +150,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 #MEDIA (archivos subidos: imágenes de destinos)
