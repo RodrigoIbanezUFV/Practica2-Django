@@ -233,7 +233,7 @@ class PopularityOrderingTests(TestCase):
 
     def test_destinations_ordered_by_popularity(self):
         """
-        Los destinos se ordenan solo por la media de valoraciones (desc).
+        Los destinos se ordenan por media de valoraciones, dejando al final los que no tienen opiniones.
         """
         # Destino A: media 4.0
         destino_a = Destination.objects.create(name="Destino A", description="desc A")
@@ -258,6 +258,13 @@ class PopularityOrderingTests(TestCase):
         self.assertEqual(destinos[0], destino_b)
         self.assertEqual(destinos[1], destino_a)
         self.assertEqual(destinos[2], destino_c)
+
+        self.assertEqual(destinos[0].reviews_count, 1)
+        self.assertEqual(destinos[1].reviews_count, 2)
+        self.assertEqual(destinos[2].reviews_count, 0)
+        self.assertEqual(destinos[0].avg_rating, 5.0)
+        self.assertEqual(destinos[1].avg_rating, 4.0)
+        self.assertIsNone(destinos[2].avg_rating)
 
     def test_tiebreak_by_average_rating(self):
         """
