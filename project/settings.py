@@ -187,6 +187,8 @@ if 'test' in sys.argv:
 
     # Evita errores del manifest de staticfiles en tests
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+    # Los tests nunca deben subir a Cloudinary: usan disco local.
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
     EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
 
 SITE_ID = 1
@@ -195,4 +197,36 @@ LOGOUT_REDIRECT_URL = "/"
 ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_LOGIN_METHODS = {"username"}
 ACCOUNT_SIGNUP_FIELDS = ["username*", "password1*", "password2*"]
+
+# =========================================================================
+# Almacenamiento de imágenes (media) en producción con Cloudinary
+# Django NO sirve MEDIA con DEBUG=False. Usamos Cloudinary como storage de
+# media (se sirven desde su CDN). NO metemos cloudinary en INSTALLED_APPS
+# porque sus estáticos rompen collectstatic en el pipeline. En local, sin
+# credenciales, se usa disco (FileSystemStorage por defecto).
+# =========================================================================
+CLOUDINARY_CLOUD_NAME = os.getenv("CLOUDINARY_CLOUD_NAME")
+CLOUDINARY_API_KEY = os.getenv("CLOUDINARY_API_KEY")
+CLOUDINARY_API_SECRET = os.getenv("CLOUDINARY_API_SECRET")
+
+if (
+    "test" not in sys.argv
+    and CLOUDINARY_CLOUD_NAME
+    and CLOUDINARY_API_KEY
+    and CLOUDINARY_API_SECRET
+):
+    import cloudinary
+
+    cloudinary.config(
+        cloud_name=CLOUDINARY_CLOUD_NAME,
+        api_key=CLOUDINARY_API_KEY,
+        api_secret=CLOUDINARY_API_SECRET,
+        secure=True,
+    )
+    CLOUDINARY_STORAGE = {
+        "CLOUD_NAME": CLOUDINARY_CLOUD_NAME,
+        "API_KEY": CLOUDINARY_API_KEY,
+        "API_SECRET": CLOUDINARY_API_SECRET,
+    }
+    DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
