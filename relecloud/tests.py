@@ -103,7 +103,7 @@ class DestinationImageTests(TestCase):
         url = reverse("destinations")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "default.jpg")
+        self.assertContains(response, "default.jpeg")
 
 
 
