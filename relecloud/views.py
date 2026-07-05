@@ -6,7 +6,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.db.models import Avg
+from django.db.models import Avg, Count, F
 
 from . import models
 from .forms import OpinionForm
@@ -25,8 +25,11 @@ def about(request):
 def destinations(request):
     all_destinations = (
         models.Destination.objects
-        .annotate(avg_rating=Avg('opinions__rating'))
-        .order_by('-avg_rating')
+        .annotate(
+            avg_rating=Avg('opinions__rating'),
+            reviews_count=Count('opinions', distinct=True),
+        )
+        .order_by(F('avg_rating').desc(nulls_last=True))
     )
     return render(request, 'destinations.html', {'destinations': all_destinations})
 
