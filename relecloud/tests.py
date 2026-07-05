@@ -233,19 +233,18 @@ class PopularityOrderingTests(TestCase):
 
     def test_destinations_ordered_by_popularity(self):
         """
-        Los destinos se ordenan por número de reviews (desc) y luego por media (desc).
-        El destino con más reviews debe aparecer antes que uno con menos.
+        Los destinos se ordenan solo por la media de valoraciones (desc).
         """
-        # Destino A: 2 reviews
+        # Destino A: media 4.0
         destino_a = Destination.objects.create(name="Destino A", description="desc A")
         Opinion.objects.create(destination=destino_a, rating=3)
         Opinion.objects.create(destination=destino_a, rating=5)
 
-        # Destino B: 1 review
+        # Destino B: media 5.0
         destino_b = Destination.objects.create(name="Destino B", description="desc B")
         Opinion.objects.create(destination=destino_b, rating=5)
 
-        # Destino C: 0 reviews
+        # Destino C: sin reviews
         destino_c = Destination.objects.create(name="Destino C", description="desc C")
 
         url = reverse("destinations")
@@ -255,9 +254,9 @@ class PopularityOrderingTests(TestCase):
         # La vista pasa los destinos en orden en el contexto
         destinos = list(response.context["destinations"])
 
-        # A (2 reviews) antes que B (1 review) antes que C (0 reviews)
-        self.assertEqual(destinos[0], destino_a)
-        self.assertEqual(destinos[1], destino_b)
+        # B (media 5.0) antes que A (media 4.0) antes que C (sin media)
+        self.assertEqual(destinos[0], destino_b)
+        self.assertEqual(destinos[1], destino_a)
         self.assertEqual(destinos[2], destino_c)
 
     def test_tiebreak_by_average_rating(self):
